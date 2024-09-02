@@ -1,3 +1,16 @@
+document.addEventListener("DOMContentLoaded", function () {
+  var toolbar = document.getElementById("upsell-toolbar");
+  var toolbarOffsetTop = toolbar.offsetTop;
+
+  window.addEventListener("scroll", function () {
+    if (window.scrollY > toolbarOffsetTop) {
+      toolbar.classList.add("fixed");
+    } else {
+      toolbar.classList.remove("fixed");
+    }
+  });
+});
+
 async function upsellToolbar() {
   //1. Obtain Information from card
   fetch("/cart.js")
@@ -42,94 +55,17 @@ async function upsellToolbar() {
 
       document.querySelector(
         "#upsell-toolbar-message-right"
-      ).innerText = `Nur noch ${amountLeft.toFixed(2)} ${currency}`;
+      ).innerText = `Nur noch ${amountLeft.toLocaleString(
+        Shopify.country.toLowerCase(),
+        {
+          style: "currency",
+          currency: currency,
+        }
+      )}`;
     });
 }
 
-//1.2 If the cart is not empty, show the progress bar and hide the loading div
-
-//2. Obtain configuration for the free shipment
-
-//3. Get the current country
-
-//   const url =
-//     "https://phpstack-1035961-3646380.cloudwaysapps.com/api/get-progressbar-data?shop=" +
-//     Shopify.shop;
-
-//   fetch(url)
-//     .then((response) => response.json())
-//     .then((localData) => {
-//       if (localData.data.success) {
-//         fetch("/cart.js")
-//           .then((response) => response.json())
-//           .then((Cartdata) => {
-//             if (
-//               Cartdata.total_price <= 0 &&
-//               localData.data.settings?.progressbar_round_behaviour === 1
-//             ) {
-//               jq(".ProgressBarLoadingWrapper").hide();
-//               jq(".ProgressBarMainWrapper").hide();
-//               jq(".loadingDiv").show();
-//             } else {
-//               jq(".ProgressBarLoadingWrapper").show();
-//               progressBarElements.forEach(function (div) {
-//                 div.style.display = "block";
-//               });
-//               progressBarTimeline(localData.data);
-//               offersBar(localData.data, Cartdata);
-//               setUpsellData(
-//                 localData.data.settings.upsell,
-//                 Cartdata,
-//                 localData.data.products,
-//                 localData.data
-//               );
-//             }
-//             if (localData.data.settings?.progressbar_round_corner === 1) {
-//               jq(".ProgressBarTimmerBody").css({
-//                 "border-top-left-radius": "12px",
-//                 "border-top-right-radius": "12px",
-//               });
-
-//               jq(".ProgressBarBody").css({
-//                 "border-bottom-left-radius": "12px",
-//                 "border-bottom-right-radius": "12px",
-//               });
-//             }
-//             console.log(
-//               "progress bar background 22",
-//               localData.data.offer?.hide_counterdown_timer,
-//               localData.data.settings?.progressbar_round_corner
-//             );
-//             if (
-//               (localData.data.offer?.hide_counterdown_timer === 1 &&
-//                 localData.data.settings?.progressbar_round_corner === 1) ||
-//               (localData.data.settings?.progressbar_round_corner === 1 &&
-//                 localData.data.offer?.countedown_timer_status === 0)
-//             ) {
-//               jq(".ProgressBarBody").css({
-//                 "border-top-left-radius": "12px",
-//                 "border-top-right-radius": "12px",
-//               });
-
-//               console.log(
-//                 "progress bar background 22 if",
-//                 localData.data.offer?.hide_counterdown_timer,
-//                 localData.data.settings?.progressbar_round_corner
-//               );
-//             }
-//           })
-//           .catch((error) => {
-//             console.log("Error fetching cart data:", error);
-//           });
-//       }
-//     })
-//     .catch((error) => {
-//       console.log("Error fetching progress bar data:", error);
-//     });
-// }
-
-// progressBar();
-
+//Function to get the currency symbol
 function getCurrencySymbol(cartValue) {
   var currencySymbols = {
     BRL: "R$",
