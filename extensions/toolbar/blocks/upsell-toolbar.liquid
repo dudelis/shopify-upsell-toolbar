@@ -1,0 +1,47 @@
+<section class="upsell-toolbar" style="background-color: {{ block.settings.bgcolor }}; display:none">
+  <div class="upsell-toolbar-container" >
+      <div class="upsell-toolbar-message-wrapper">
+        <span id="upsell-toolbar-message-left" style="color: {{ block.settings.fontcolor }};">{{ block.settings.leftmessage }}</span>
+        <span id="upsell-toolbar-message-right" style="color: {{ block.settings.fontcolor }};"></span>
+      </div>
+      
+      <div class="upsell-toolbar-bar">
+          <div class="upsell-toolbar-fill" id="upsell-toolbar-fill"></div>
+      </div>   
+  </div>
+</section>
+
+<script>
+  var upsellToolbarSettings = {{ block.settings | json }};  
+  var upsellToolbarMarket = "{{ localization.market.handle }}";
+     
+  // var upsellToolbar = new UpsellToolbar(upsellToolbarSettings, upsellToolbarMarket);
+  // upsellToolbar.init();
+</script>
+
+<script src="{{ 'upsell-toolbar.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "Star Rating",
+  "target": "head",
+  "stylesheet": "upsell-toolbar.css",
+  "settings": [
+    { "type": "color", "id": "bgcolor", "label": "Background Colour", "default": "#ff0000" },
+    { "type": "color", "id": "barcolor", "label": "Bar Colour", "default": "#ff0000" },
+    { "type": "color", "id": "fontcolor", "label": "Font Colour", "default": "#888" },
+    { "type": "text", "id": "leftmessage", "label": "Left Message", "default": "Kostenloser Versand innerhalb Deutschlands"},
+    { "type":"number", "id": "shippinglimit", "label": "Shipping Limit", "default": 100},
+    {"type": "select", "id": "markets", "label":"Markets", "default":"de", "options": [
+      {
+        "value": "de",
+        "label": "de"
+      },
+      {
+        "value": "international",
+        "label": "international"
+      }
+    ]}
+  ]
+} 
+{% endschema %}

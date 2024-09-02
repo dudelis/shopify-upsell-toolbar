@@ -1,0 +1,11 @@
+{
+  "blocks": {
+    "messages": {
+      "left_message": "Ratings DE",
+      "right_message": "noch %price% %currency% von kostenlosen Versand entfernt!"
+    },
+    "home": {
+      "recommendationText": "Recommended Product!"
+    }
+  }
+}
