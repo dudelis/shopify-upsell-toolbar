@@ -16,7 +16,6 @@ async function upsellToolbar() {
   fetch("/cart.js")
     .then((response) => response.json())
     .then((cartData) => {
-      console.log(cartData);
       //1.1 Check the cart and either hide OR show the progress bar
 
       //Checking if the selected market
@@ -28,7 +27,8 @@ async function upsellToolbar() {
         cartData.original_total_price === 0 ||
         cartData.requires_shipping === false ||
         cartData.original_total_price / 100 >=
-          upsellToolbarSettings.shippinglimit
+          upsellToolbarSettings.shippinglimit ||
+        internationalMarket
       ) {
         document.querySelector(".upsell-toolbar").style.display = "none";
       } else {
@@ -45,8 +45,6 @@ async function upsellToolbar() {
           100 /
           upsellToolbarSettings.shippinglimit) *
         100;
-      console.log("percentage", percentage);
-      console.log("amountLeft", amountLeft);
 
       //3. Display the information on the toolbar
       document.querySelector(
@@ -139,7 +137,6 @@ window.fetch = async (...args) => {
   // request interceptor here
   const response = await originalFetch(resource, config);
   if (args[0] == "/cart/change" || args[0].includes("/cart/add")) {
-    console.log("/cart/change OR /cart/add");
     upsellToolbar();
   }
   return response;
@@ -151,7 +148,6 @@ if (productPath[1] == "products") {
   document
     .querySelector('[action="/cart/add"] [type="submit"]')
     .addEventListener("click", function (e) {
-      console.log("products page - SUBMIT");
       upsellToolbar();
     });
 }
@@ -159,7 +155,6 @@ document.addEventListener("DOMContentLoaded", function () {
   var buttons = document.querySelectorAll(".quantity__button--minus");
   buttons.forEach(function (button) {
     button.addEventListener("click", function () {
-      console.log("minus page");
       upsellToolbar();
     });
   });
@@ -168,7 +163,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var buttons = document.querySelectorAll(".quantity__button--plus");
   buttons.forEach(function (button) {
     button.addEventListener("click", function () {
-      console.log("plus page");
+      upsellToolbar();
     });
   });
 });
